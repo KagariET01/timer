@@ -1,0 +1,6 @@
+{
+	"ET01":{
+		"type":"dc",
+		"url":"<put your webhook url here>"
+	}
+}
