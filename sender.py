@@ -6,12 +6,12 @@ import json
 
 
 
-def send_DC(hook,title,days):
+def send_DC(hook,title,d,h,m):
 	data={
 		"embeds":[
 			{
 				"title":title,
-				"description":("剩下 "+str(days)+" 天"),
+				"description":("剩下 "+str(d)+" 天 "+str(h)+" 時 "+str(m)+" 分"),
 				"color":16711680
 			}
 		],
