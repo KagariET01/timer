@@ -28,7 +28,7 @@ for i in range(len(timelist)):
 		minute=timelist[i]["sendtime"]["m"],
 		second=timelist[i]["sendtime"]["s"]
 	)
-	timelist[i]["contest"]=dt(
+	timelist[i]["contest"]=dt(#  活動時間
 		year=timelist[i]["time"]["Y"],
 		month=timelist[i]["time"]["M"],
 		day=timelist[i]["time"]["D"],
@@ -36,17 +36,15 @@ for i in range(len(timelist)):
 		minute=timelist[i]["time"]["m"],
 		second=timelist[i]["time"]["s"]
 	)
-	if(timelist[i]["contest"]<timelist[i]["dttime"]):
+	if(timelist[i]["contest"]<timelist[i]["dttime"]):#  最後一次傳送時間必須早於活動時間
 		timelist[i]["dttime"]-=td(days=1)
-	if(nwtc>timelist[i]["dttime"]):#  contest已經結束
+	if(nwtc>timelist[i]["contest"]):#  contest已經結束
 		eracelst.append(i)
 	else:
 		cton=timelist[i]["dttime"]-nwtc#  距離contest開始還有多久
 		std=td(days=timelist[i]["sendafterD"])#  要過幾天才傳一次
 		ct=int(cton/std)
-		if(cton%std!=td(0)):
-			timelist[i]["nxt"]=timelist[i]["dttime"]-std*ct
-	del timelist[i]["contest"]
+		timelist[i]["nxt"]=timelist[i]["dttime"]-std*ct
 	del timelist[i]["time"]
 	del timelist[i]["sendtime"]
 	timelist[i]["sendafterD"]=td(days=timelist[i]["sendafterD"])
@@ -70,10 +68,12 @@ try:
 		eracelst=[]
 		for i in range(len(timelist)):
 			if(nwtc>timelist[i]["nxt"] or firsttime):#  發送
-				print(timelist[i]["title"],"剩下",int((timelist[i]["dttime"]-nwtc).days),"天\n已發送給", end="")
+				#left=timelist[i]["contest"]-timelist[i]["nxt"]
+				left=timelist[i]["contest"]-nwtc
+				print(timelist[i]["title"],"剩下",left.days,"天\n已發送給", end="")
 				for j in timelist[i]["sendto"]:
 					if(webhooklist[j]["type"]=="dc"):
-						sender.send_DC(webhooklist[j]["url"],timelist[i]["title"],int((timelist[i]["dttime"]-nwtc).days))
+						sender.send_DC(webhooklist[j]["url"],timelist[i]["title"],left.days,left.seconds//3600,left.seconds//60%60)
 						print(j,end=",")
 				print()
 				if(nwtc>timelist[i]["nxt"]):
