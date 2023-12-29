@@ -25,5 +25,5 @@ def send_DC(hook,title,d,h,m):
 	
 
 if __name__ == '__main__':
-	hook="https://ptb.discord.com/api/webhooks/1188864223841894470/AeclofLMywnP3vxd-q4RJpRvYFYUhLz5ZSOJoWxYq9VxuHi8auzqG9zmGAjOaZAPJ6sN"
+	hook="<webhook here>"
 	send_DC(hook,"學測倒數",10)
